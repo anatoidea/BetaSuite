@@ -28,6 +28,7 @@ If you are upgrading from v0.0.1, you have to do the following steps:
 - Third, BetaSuite is not magic.  It relies on the v2 NudeNet neural net to identify features to censor and we are extremely grateful to the creators of that net.  In some situations, it will perform better than others.  There is nothing I can really do to make it perform better (aside from training a better neural net, which is far outside my abilities).
 - These installation instructions are current as of July 26, 2022.  It is possible that in the future things that BetaSuite depends on may change, and the code may even stop working.
 - These instructions are only for Windows.  Many of these things may work under Mac or Linux, but I don't have access to either of them and am not an expert.  Some things almost certainly will not work.
+- See https://github.com/anatoidea/betasuite_dockerized for a Dockerized version that works on Linux (at least with AMD cards). This does not support BetaVision real-time censoring but works on images and videos.
 - These files are code that I wrote that runs on your computer.  They are all open-source, and you can read the code before you run it, but if you do not (or cannot) read the code, you are trusting me that these programs will not delete all your data, send your browsing history to your mother, steal your passwords, and use your computer to mine bitcoin.  For what it's worth, I promise that they don't do any of those things.
 - During these instructions, anything you have to type will be written `like this`. 
 
