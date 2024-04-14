@@ -7,12 +7,7 @@ import betaconfig
 import betaconst
 
 def get_session():
-    if betaconfig.gpu_enabled:
-        providers = [ ( 'CUDAExecutionProvider', { 'device_id': betaconfig.cuda_device_id } ) ]
-    else:
-        providers = [ ( 'CPUExecutionProvider', {} ) ]
-
-    session = onnxruntime.InferenceSession( '../model/detector_v2_default_checkpoint.onnx', providers=providers )
+    session = onnxruntime.InferenceSession( '../model/detector_v2_default_checkpoint.onnx', providers=betaconfig.providers )
     return( session )
 
 def get_resize_scale( img_h, img_w, max_length ):

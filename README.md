@@ -66,6 +66,7 @@ Yes, you really have to do all these things.
     * ffmpeg is used for manipulating video files. Builds for Windows are available here: https://ffmpeg.org/download.html#build-windows .  You may need to hover your mouse over the blue Windows logo on the left hand side to get the Windows links to show up.
     * I recommend clicking on "Windows Builds by BtBN" and then downloading "ffmpeg-master-latest-win64-gpl.zip".  
     * Whatever version you download, unzip it into InstallFolder/ffmpeg/.  So you should have, for example, InstallFolder/ffmpeg/bin/ffmpeg.exe.
+    * If you are on Linux or want to use your system's ffmpeg, modify the `ffmpeg_path` and `ffprobe_path` lines in `betaconfig.py`.
 
 5. Download NudeNet neural net model
     * The NudeNet model is the piece of code that identifies features to censor.  It is a single file.  You can download it here: https://github.com/notAI-tech/NudeNet/releases/download/v0/detector_v2_default_checkpoint.onnx
@@ -106,7 +107,7 @@ This section is only for users with a modern NVidia graphics card.  If you do no
 * Open a cmd window by going to Start->Run and entering `cmd` and then pressing enter.  In the black window that appears, type the following commands, pressing enter after each one:
     * `pip uninstall onnxruntime`
     * `pip install onnxruntime-gpu`
-* Navigate to InstallFolder/BetaSuite-0.2.4/ and open betaconfig.py in Notepad by right-clicking on it, hovering over "Open With", and choosing Notepad.  In the first section of the file, change gpu_enabled=0 to `gpu_enabled=1`.
+* Navigate to InstallFolder/BetaSuite-0.2.4/ and open betaconfig.py in Notepad by right-clicking on it, hovering over "Open With", and choosing Notepad.  In the first section of the file, comment out the CPU `providers` line and uncomment the line corresponding to your GPU hardware (probably CUDA).
 * Open a cmd window by going to Start->Run and entering `cmd` and then pressing enter.  In the black window that appears, type the following commands, pressing enter after each one:
     * `c:` where c is the letter of the drive that InstallFolder is located on
     * `cd InstallFolder/BetaSuite-0.2.4/` where InstallFolder is your InstallFolder
@@ -117,7 +118,7 @@ This section is only for users with a modern NVidia graphics card.  If you do no
     * Open a cmd window by going to Start->Run and entering `cmd` and then pressing enter.  In the black window that appears, type the following commands, pressing enter after each one:
         * `pip uninstall onnxruntime-gpu`
         * `pip install onnxruntime`
-    * Navigate to InstallFolder/BetaSuite-0.2.4/ and open betaconfig.py in Notepad by right-clicking on it, hovering over "Open With", and choosing Notepad.  In the first section of the file, change gpu_enabled=1 to `gpu_enabled=0`. Then save and close the file.
+    * Navigate to InstallFolder/BetaSuite-0.2.4/ and open betaconfig.py in Notepad by right-clicking on it, hovering over "Open With", and choosing Notepad.  In the first section of the file, comment out the GPU `providers` line and uncomment the CPU line. Then save and close the file.
 
 ## Testing BetaTV to Censor Videos
 * Take one video you want to censor and copy it to InstallFolder/uncensored_vids.  I recommend a short video (less than a minute).
@@ -153,7 +154,7 @@ To further configure BetaVision (including what part of the screen is censored),
 ## Configuring BetaSuite
 You can adjust how the censoring works by modifying InstallFolder/BetaSuite-0.2.4/betaconfig.py.  
 Navigate to InstallFolder/BetaSuite-0.2.4/ and open betaconfig.py in Notepad by right-clicking on it, hovering over "Open With", and choosing Notepad.
-* `gpu_enabled`: this was covered in the "Setting Up GPU Acceleration" section above
+* `providers`: this was covered in the "Setting Up GPU Acceleration" section above
 * `picture_sizes`: You can experiment with different values to get slightly different censoring.  In general, `[1280]` is recommended, with `[640]` being faster but less accurate and `[2560]` being slower and better for collages or group photos.  You can also combine settings to censor images in multiple passes by having two numbers, like `[1280, 2560]`, which will be slower.  You can also specify `[0]` as a size, which means the full size image or video will be passed to NudeNet.  This is generally not recommended and will usually be slower, but you can experiment with it.
 * `video_censor_fps`: for BetaTV, this determines how many frames are run through NudeNet.  Analyzing every frame is very slow.  Instead, BetaTV analyzes a portion of the frames and assumes the features don't move too much between frames.  I use `15`.  All the way down to `5` is reasonable.  Higher number is more accurate, lower number is faster.
 * `vision_cap_xxx`: these settings apply to BetaVision and dictate what part of the screen is examined for censoring.  If you have two monitors, I suggest putting the censorable content on the second monitor, and then turning it off, so you can only see the censored version.  An alternative is to put censorable content on the left half of your screen, and cover it with a piece of paper or intentionally not look at it.  You can use the included script betavision-coordinates.py to find the proper numbers for this section.
@@ -180,7 +181,7 @@ Navigate to InstallFolder/BetaSuite-0.2.4/ and open betaconfig.py in Notepad by 
 * `item_overrides`: this allows you to control the above settings on a feature-by-feature basis.  By default, breasts and exposed vulva have increased area safety, based on my testing of the net.
     * Note that you may not get very good results changing the censor style for different features that may overlap.  For example, NudeNet may sometimes identity a nude breast as both a nude breast and a covered breast, so if you have very different censors for the two of them, results may not look great.  In general, I recommend keeping the censor styles the same for features that may be overlapping.  As always, feel free to experiment and see what works best for you.
 * `input_delete_probability`: this defaults to `0`, which means that your input, uncensored files will not be deleted by BetaStare or BetaTV.  You can set this to `1` and your input files will be deleted.  You can also set this to a fraction like `0.65`, in which case every file has a 65% chance of being deleted.  Be certain, if you set this, that you are okay with your input files being deleted.  
-* `cuda_device_id`: if you have more than one GPU, and want to run BetaSuite GPU Acceleration on a non-primary card, set this.  You probably know what you're doing so I won't tell you how to set it.
+* `ffmpeg_path` and `ffprobe_path`: set these if you are on Linux or want to use a different FFMPEG install than the rest of this README recommends.
 * `censor_overlap_strategy`: just leave this as the default, trust me.
 * `betavision_delay`: this setting dictates how long content is delayed in BetaVision.  Some delay is necessary, so that censorable content has time to be detected before it is shown to you.  The delay needs to be at least as long as the time it takes your computer to scsreenshot and detect censorable content. 
 * `betavision_interpolate`: this setting dictates whether BetaVision will display the last captured frame, or mix the two most recent frames.  Turning this to True makes video smoother, but introduces ghosting and artifacts.  If your system runs too slowly to get smooth video with this set to False, try setting it to True.  Ultimately, this is a personal preference.

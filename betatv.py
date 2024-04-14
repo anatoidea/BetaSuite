@@ -98,9 +98,9 @@ for root,d_names,f_names in os.walk(betaconst.video_path_uncensored):
                     boxes.sort( key = lambda x: x['start'] )
 
                     if betaconfig.debug_mode&1:
-                        command_base = [ '../ffmpeg/bin/ffmpeg.exe', '-y' ]
+                        command_base = [ betaconfig.ffmpeg_path, '-y' ]
                     else:
-                        command_base = [ '../ffmpeg/bin/ffmpeg.exe', '-y', '-loglevel', 'error' ]
+                        command_base = [ betaconfig.ffmpeg_path, '-y', '-loglevel', 'error' ]
 
                     command = command_base + [
                             '-f', 'rawvideo',

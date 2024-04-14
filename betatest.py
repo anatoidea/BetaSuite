@@ -23,15 +23,10 @@ image = np.array(sct.grab(monitor))[:,:,:3]
 image = image.astype( np.float32 )
 image -= [ 103.939, 116.779, 123.68 ]
 
-if betaconfig.gpu_enabled:
-    providers = [ ( 'CUDAExecutionProvider', { 'device_id':0 } ) ]
-else:
-    providers = [ ( 'CPUExecutionProvider', {} ) ]
-
 options = onnxruntime.SessionOptions()
 options.log_severity_level = 0
 
-session = onnxruntime.InferenceSession( '../model/detector_v2_default_checkpoint.onnx', providers=providers )
+session = onnxruntime.InferenceSession( '../model/detector_v2_default_checkpoint.onnx', providers=betaconfig.providers )
 
 model_outputs = [ s_i.name for s_i in session.get_outputs() ]
 model_input_name = session.get_inputs()[0].name
