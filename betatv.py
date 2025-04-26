@@ -153,6 +153,7 @@ for root,d_names,f_names in os.walk(betaconst.video_path_uncensored):
                                 '-stats',
                                 '-i', censored_avi,
                                 '-i', uncensored_path,
+                                '-strict', '-2',
                                 '-c:a', 'copy',
                                 '-c:v', 'libx264',
                                 '-crf', '21',

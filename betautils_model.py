@@ -5,9 +5,11 @@ import onnxruntime
 
 import betaconfig
 import betaconst
+from betautils_config import get_providers
+
 
 def get_session():
-    session = onnxruntime.InferenceSession( '../model/detector_v2_default_checkpoint.onnx', providers=betaconfig.providers )
+    session = onnxruntime.InferenceSession( '../model/detector_v2_default_checkpoint.onnx', providers=get_providers())
     return( session )
 
 def get_resize_scale( img_h, img_w, max_length ):
